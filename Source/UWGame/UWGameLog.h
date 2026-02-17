@@ -1,0 +1,3 @@
+#pragma once
+
+UWGAME_API DECLARE_LOG_CATEGORY_EXTERN(LogUwGame, Log, All);

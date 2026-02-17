@@ -38,5 +38,8 @@ public:
 	void HandleMovementInput(const FInputActionValue& InputValue);
 	void HandleCameraInput(const FInputActionValue& InputValue);
 
+protected:
+	UPROPERTY(EditAnywhere, Category = "Damage")
+	float DamageAmount = 5.f;
 };
 

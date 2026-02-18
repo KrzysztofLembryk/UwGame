@@ -20,9 +20,6 @@ void AUWPlayerPawn::BeginPlay()
 		return;
 	}
 
-	const UUWGameSettings* Settings = GetDefault<UUWGameSettings>();
-	this->ExperiencePointsForNextLvl = Settings->ExperiencePointsForNextLvl;
-
 	BoidSubsystem->RegisterWolf(this);
 }
 
@@ -67,20 +64,67 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
                         {
                         case 0:
                             AccelerationPerSecond *= Settings->SpeedMultiplier;
-                            UE_LOG(LogUwGame, Log, TEXT("Level Up! Speed increased by %.2f"), Settings->SpeedMultiplier);
+
+                            // UE_LOG(LogUwGame, Log, TEXT("Level Up! Speed increased by %.2f"), Settings->SpeedMultiplier);
+
+							GEngine->AddOnScreenDebugMessage(
+								-1, 
+								6.f, 
+								FColor::Yellow, 
+								FString::Printf(
+									TEXT("Level Up! Speed: %.2f"), AccelerationPerSecond),
+								true,
+								FVector2D(2.0f, 2.0f)
+								);
                             break;
                         case 1:
                             Damage *= Settings->DamageMultiplier;
-                            UE_LOG(LogUwGame, Log, TEXT("Level Up! Damage increased by %.2f"), Settings->DamageMultiplier);
+
+                            // UE_LOG(LogUwGame, Log, TEXT("Level Up! Damage increased by %.2f"), Settings->DamageMultiplier);
+
+							GEngine->AddOnScreenDebugMessage(
+								-1,
+								5.f,
+								FColor::Yellow,
+								FString::Printf(
+									TEXT("Level Up! Damage: %.2f"), Damage),
+								true,
+								FVector2D(2.0f, 2.0f)
+							);
+
                             break;
                         case 2:
                             CactusRetaliation *= Settings->CactusRetaliationMultiplier;
-                            UE_LOG(LogUwGame, Log, TEXT("Level Up! Cactus Retaliation decreased by %.2f"), Settings->CactusRetaliationMultiplier);
+
+                            // UE_LOG(LogUwGame, Log, TEXT("Level Up! Cactus Retaliation decreased by %.2f"), Settings->CactusRetaliationMultiplier);
+
+							GEngine->AddOnScreenDebugMessage(
+								-1,
+								5.f,
+								FColor::Yellow,
+								FString::Printf(
+									TEXT("Level Up! Cactus Retaliation: %.2f"), 
+									CactusRetaliation),
+								true,
+								FVector2D(2.0f, 2.0f)
+							);
                             break;
                         case 3:
                             AdditionalTime *= Settings->AdditionalTimeMultiplier;
 							GameInst->AddMoreTime(AdditionalTime);
-                            UE_LOG(LogUwGame, Log, TEXT("Level Up! Added %.2f seconds till the end of game"), AdditionalTime);
+
+                            // UE_LOG(LogUwGame, Log, TEXT("Level Up! Added %.2f seconds till the end of game"), AdditionalTime);
+
+							GEngine->AddOnScreenDebugMessage(
+								-1,
+								5.f,
+								FColor::Yellow,
+								FString::Printf(
+									TEXT("Level Up! Added Time: %.2f seconds"),
+									AdditionalTime),
+								true,
+								FVector2D(2.0f, 2.0f)
+							);
                             break;
                         }
 					}
@@ -101,9 +145,11 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
 
 void AUWPlayerPawn::RecvCactusRetaliation()
 {
-	if (UUWGameInstance* GameInst = Cast<UUWGameInstance>(GetGameInstance()))
+	ExperiencePoints -= this->CactusRetaliation * this->Damage;
+
+	if (ExperiencePoints < 0.f)
 	{
-		GameInst->SubstractFromScore(this->CactusRetaliation * this->Damage);
+		ExperiencePoints = 0.f;
 	}
 }
 

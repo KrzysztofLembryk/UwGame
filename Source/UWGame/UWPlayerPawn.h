@@ -14,16 +14,16 @@ class AUWPlayerPawn : public ADefaultPawn
 	
 public:
 	// Changing speed to acceleration per second, because now, ADefaultPawn gives us FloatingMovementComponent features with max speed defined there
-	UPROPERTY(EditAnywhere, Category = "CharacterStatistics")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterStatistics")
 	float AccelerationPerSecond = 50.f;
 
-	UPROPERTY(EditAnywhere, Category = "CharacterStatistics")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterStatistics")
 	float Damage = 2.f;
 
-	UPROPERTY(EditAnywhere, Category = "CharacterStatistics")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterStatistics")
 	float CactusRetaliation = 1.5f;
 
-	UPROPERTY(EditAnywhere, Category = "CharacterStatistics")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterStatistics")
 	float AdditionalTime = 10.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "CharacterStatistics")
@@ -32,7 +32,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "CharacterStatistics")
 	int32 CurrCharacterLevel = 0;
 
-	UPROPERTY(EditAnywhere, Category = "CharacterStatistics")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "CharacterStatistics")
 	float ExperiencePointsForNextLvl = 0.f;
 
 	UPROPERTY(EditAnywhere, Category = "EI")

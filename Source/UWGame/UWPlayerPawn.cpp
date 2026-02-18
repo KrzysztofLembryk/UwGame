@@ -8,7 +8,6 @@
 #include "UWGameInstance.h"
 #include "UWSheep.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "GameFramework/FloatingPawnMovement.h"
 
 void AUWPlayerPawn::BeginPlay()
 {
@@ -34,14 +33,22 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
 	{
 		if (Sheep->CanBeEaten())
 		{
-			Sheep->Destroy();
-			
-			if (UUWGameInstance* GameInst = Cast<UUWGameInstance>(GetGameInstance()))
+			if (Sheep->ReceiveDamage(this->Damage))
 			{
-				GameInst->AddScore(Sheep->GetSheepPoints());
+				Sheep->Destroy();
+				
+				if (UUWGameInstance* GameInst = Cast<UUWGameInstance>(GetGameInstance()))
+				{
+					GameInst->AddScore(Sheep->GetSheepPoints());
+				}
+	
+				return true;
 			}
-
-			return true;
+			else
+			{
+				UE_LOG(LogUwGame, Log, TEXT("Sheep is not dead yet. Current health: %d, dealt damage: %d"), Sheep->GetSheepHealth(), this->Damage);
+				return false;
+			}
 		}
 	}
 
@@ -67,12 +74,9 @@ void AUWPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 		return;
 	}
 
-	if ( ! WolfInputMappingContext 
-		|| ! MovementInputAction 
-		|| ! CameraInputAction 
-	)
+	if ( ! WolfInputMappingContext || ! MovementInputAction || ! CameraInputAction)
 	{
-		UE_LOG(LogUwGame, Error, TEXT("WolfInputMappingContext is null or MovementInputAction is null or CameraInputAction is null or. Please assign them in editor."));
+		UE_LOG(LogUwGame, Error, TEXT("WolfInputMappingContext is null or MovementInputAction is null or CameraInputAction is null"));
 		return;
 	}
 	

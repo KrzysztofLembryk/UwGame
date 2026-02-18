@@ -119,8 +119,15 @@ bool UUWBoidSubsystem::RegisterSheep(AUWSheep* AuwSheep, uint32& RetID)
 	NewBoid.Velocity = FVector(FMath::RandRange(-100, 100), FMath::RandRange(-100, 100), 0.f);
 
 	const UUWGameSettings* Settings = GetDefault<UUWGameSettings>();
-	NewBoid.SheepPoints = FMath::RandRange(Settings->SheepPointsMin, Settings->SheepPointsMax);
+
+	NewBoid.SheepPoints = FMath::RandRange(
+		Settings->SheepPointsMin, 
+		Settings->SheepPointsMax
+	);
+	NewBoid.SheepHealth = NewBoid.SheepPoints;
+
 	AuwSheep->SetSheepPoints(NewBoid.SheepPoints);
+	AuwSheep->SetSheepHealth(NewBoid.SheepHealth);
 	
 	Boids.Add(NewBoid);
 	BoidActors.Add(NextID, AuwSheep);

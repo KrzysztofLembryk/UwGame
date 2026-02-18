@@ -15,7 +15,7 @@ class AUWPlayerPawn : public ADefaultPawn
 public:
 	// Changing speed to acceleration per second, because now, ADefaultPawn gives us FloatingMovementComponent features with max speed defined there
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float AccelerationPerSecond = 100.f;
+	float AccelerationPerSecond = 10.f;
 
 	UPROPERTY(EditAnywhere, Category = "EI")
 	TObjectPtr<UInputMappingContext> WolfInputMappingContext = nullptr;
@@ -38,5 +38,7 @@ public:
 	void HandleMovementInput(const FInputActionValue& InputValue);
 	void HandleCameraInput(const FInputActionValue& InputValue);
 
+protected:
+	int32 Damage = 5.f;
 };
 

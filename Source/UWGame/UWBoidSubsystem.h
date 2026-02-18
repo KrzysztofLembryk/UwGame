@@ -11,6 +11,7 @@ struct FBoid
 	FVector Position;
 	FVector Velocity;
 	uint16 SheepPoints;
+	uint16 SheepHealth;
 };
 
 struct FBoidNeighbour

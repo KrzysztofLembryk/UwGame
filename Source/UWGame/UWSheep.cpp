@@ -43,6 +43,28 @@ bool AUWSheep::CanBeEaten() const
 	return bIsAlone;
 }
 
+bool AUWSheep::ReceiveDamage(int32 DamageAmount)
+{
+	SheepHealth -= DamageAmount;
+	SetSheepHealth(SheepHealth);
+	
+	if (SheepHealth <= 0)
+	{
+		SheepHealth = 0;
+		UE_LOG(LogTemp, Log, TEXT("Sheep with ID %d has been killed."), BoidID);
+	}
+
+	return SheepHealth <= 0;
+}
+
+void AUWSheep::SetSheepHealth(int32 NewValue)
+{
+	SheepHealth = NewValue;
+	
+	OnSheepHealthChanged(SheepHealth);
+}
+
+
 void AUWSheep::SetSheepPoints(int32 NewValue)
 {
 	SheepPoints = NewValue;
@@ -53,4 +75,10 @@ void AUWSheep::SetSheepPoints(int32 NewValue)
 int32 AUWSheep::GetSheepPoints() const
 {
 	return SheepPoints;
+}
+
+
+int32 AUWSheep::GetSheepHealth() const
+{
+	return SheepHealth;
 }

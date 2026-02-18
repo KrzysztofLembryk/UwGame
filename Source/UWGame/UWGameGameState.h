@@ -11,6 +11,7 @@ public:
 	AUWGameGameState();
 
 	float GetTimeLeftSeconds() const;
+	void AddMoreTimeSeconds(float TimeToAdd);
 	float GetCurrentScore() const;
 	
 protected:

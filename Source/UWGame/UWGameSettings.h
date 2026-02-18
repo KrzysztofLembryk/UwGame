@@ -42,5 +42,23 @@ public:
 	int32 SheepPointsMin = 1;
 
 	UPROPERTY(Config, EditAnywhere)
-	int32 SheepPointsMax = 10;
+	int32 SheepPointsMax = 15;
+
+	UPROPERTY(Config, EditAnywhere)
+	float DamageMultiplier = 1.1f;
+
+	UPROPERTY(Config, EditAnywhere)
+	float SpeedMultiplier = 1.1f;
+
+	UPROPERTY(Config, EditAnywhere)
+	float CactusRetaliationMultiplier = 0.8f;
+
+	UPROPERTY(Config, EditAnywhere)
+	float AdditionalTimeMultiplier = 1.25f;
+
+	UPROPERTY(Config, EditAnywhere)
+	float ExpThresholdMultiplier = 1.1f;
+
+	UPROPERTY(Config, EditAnywhere)
+	float ExperiencePointsForNextLvl = 20.f;
 };

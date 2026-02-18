@@ -26,6 +26,14 @@ float UUWGameInstance::GetTimeLeftInLevel() const
 	return 0.f;
 }
 
+void UUWGameInstance::AddMoreTime(float TimeToAdd)
+{
+	if (AUWGameGameState* GameState = Cast<AUWGameGameState>(GetWorld()->GetGameState()))
+	{
+		GameState->AddMoreTimeSeconds(TimeToAdd);
+	}
+}
+
 void UUWGameInstance::StartNewGame()
 {
 	CurrentLevelNum = 1;
@@ -69,6 +77,16 @@ bool UUWGameInstance::OpenLevel(int32 LevelNum)
 void UUWGameInstance::AddScore(float ScoreToAdd)
 {
 	ScoreSum += ScoreToAdd;
+}
+
+void UUWGameInstance::SubstractFromScore(float ScoreToSubstract)
+{
+	if (ScoreToSubstract > ScoreSum)
+	{
+		ScoreSum = 0.f;
+		return;
+	}
+	ScoreSum -= ScoreToSubstract;
 }
 
 void UUWGameInstance::FinishGame()

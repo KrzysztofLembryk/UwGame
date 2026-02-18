@@ -20,6 +20,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetTimeLeftInLevel() const;
 
+	void AddMoreTime(float TimeToAdd);
+
 	UFUNCTION(BlueprintCallable)
 	void StartNewGame();
 
@@ -32,6 +34,9 @@ public:
 	bool OpenLevel(int32 LevelNum);
 	
 	void AddScore(float ScoreToAdd);
+
+	UFUNCTION(BlueprintCallable)
+	void SubstractFromScore(float ScoreToSubstract);
 
 	void FinishGame();
 	

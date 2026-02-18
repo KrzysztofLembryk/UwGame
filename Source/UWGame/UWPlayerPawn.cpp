@@ -6,6 +6,7 @@
 #include "UWGameGameMode.h"
 #include "UWGameGameState.h"
 #include "UWGameInstance.h"
+#include "UWGameSettings.h"
 #include "UWSheep.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -18,6 +19,9 @@ void AUWPlayerPawn::BeginPlay()
 	{
 		return;
 	}
+
+	const UUWGameSettings* Settings = GetDefault<UUWGameSettings>();
+	this->ExperiencePointsForNextLvl = Settings->ExperiencePointsForNextLvl;
 
 	BoidSubsystem->RegisterWolf(this);
 }
@@ -39,20 +43,68 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
 				
 				if (UUWGameInstance* GameInst = Cast<UUWGameInstance>(GetGameInstance()))
 				{
-					GameInst->AddScore(Sheep->GetSheepPoints());
+					int32 SheepPoints = Sheep->GetSheepPoints();
+					GameInst->AddScore(SheepPoints);
+					ExperiencePoints += float(SheepPoints);
+
+					const UUWGameSettings* Settings = GetDefault<UUWGameSettings>();
+
+					while (ExperiencePoints >= ExperiencePointsForNextLvl)
+					{
+						ExperiencePoints -= ExperiencePointsForNextLvl;
+						CurrCharacterLevel++;
+
+						if (ExperiencePointsForNextLvl <= 0.f)
+						{
+							ExperiencePoints = Settings->ExperiencePointsForNextLvl;
+						}
+						ExperiencePointsForNextLvl *= Settings->ExpThresholdMultiplier;
+
+						// Uniformly randomly choose one stat to upgrade 
+                        int32 RandomChoice = FMath::RandRange(0, 3);
+                        
+                        switch (RandomChoice)
+                        {
+                        case 0:
+                            AccelerationPerSecond *= Settings->SpeedMultiplier;
+                            UE_LOG(LogUwGame, Log, TEXT("Level Up! Speed increased by %.2f"), Settings->SpeedMultiplier);
+                            break;
+                        case 1:
+                            Damage *= Settings->DamageMultiplier;
+                            UE_LOG(LogUwGame, Log, TEXT("Level Up! Damage increased by %.2f"), Settings->DamageMultiplier);
+                            break;
+                        case 2:
+                            CactusRetaliation *= Settings->CactusRetaliationMultiplier;
+                            UE_LOG(LogUwGame, Log, TEXT("Level Up! Cactus Retaliation decreased by %.2f"), Settings->CactusRetaliationMultiplier);
+                            break;
+                        case 3:
+                            AdditionalTime *= Settings->AdditionalTimeMultiplier;
+							GameInst->AddMoreTime(AdditionalTime);
+                            UE_LOG(LogUwGame, Log, TEXT("Level Up! Added %.2f seconds till the end of game"), AdditionalTime);
+                            break;
+                        }
+					}
 				}
 	
 				return true;
 			}
 			else
 			{
-				UE_LOG(LogUwGame, Log, TEXT("Sheep is not dead yet. Current health: %d, dealt damage: %d"), Sheep->GetSheepHealth(), this->Damage);
+				UE_LOG(LogUwGame, Log, TEXT("Current Sheep health: %d, dealt damage: %f"), Sheep->GetSheepHealth(), this->Damage);
 				return false;
 			}
 		}
 	}
 
 	return false;
+}
+
+void AUWPlayerPawn::RecvCactusRetaliation()
+{
+	if (UUWGameInstance* GameInst = Cast<UUWGameInstance>(GetGameInstance()))
+	{
+		GameInst->SubstractFromScore(this->CactusRetaliation * this->Damage);
+	}
 }
 
 void AUWPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

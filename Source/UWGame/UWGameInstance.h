@@ -36,6 +36,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void GoToNextLvl();
 
+	UFUNCTION(BlueprintCallable)
+	void SetToDefaultScoreAndLvlNum();
+
 	int32 GetCurrentLevelNum() const { return CurrentLevelNum; }
 	
 	void AddScore(float ScoreToAdd);

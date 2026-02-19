@@ -137,6 +137,12 @@ void UUWGameInstance::GoToNextLvl()
 	}
 }
 
+void UUWGameInstance::SetToDefaultScoreAndLvlNum()
+{
+	ScoreSum = 0.f;
+	CurrentLevelNum = 0;
+}
+
 FLevelRulesData UUWGameInstance::GetCurrentLevelRules() const
 {
 	return CurrentLevelRules;

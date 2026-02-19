@@ -34,7 +34,19 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
 	{
 		if (Sheep->CanBeEaten())
 		{
-			if (Sheep->ReceiveDamage(this->Damage))
+			bool bSheepKilled = Sheep->ReceiveDamage(this->Damage);
+
+			GEngine->AddOnScreenDebugMessage(
+				-1,
+				5.f,
+				FColor::Red,
+				FString::Printf(
+					TEXT("Current Sheep health: %d, dealt damage: %f"), Sheep->GetSheepHealth(), this->Damage),
+				true,
+				FVector2D(2.0f, 2.0f)
+			);
+
+			if (bSheepKilled)
 			{
 				Sheep->Destroy();
 				
@@ -134,7 +146,7 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
 			}
 			else
 			{
-				UE_LOG(LogUwGame, Log, TEXT("Current Sheep health: %d, dealt damage: %f"), Sheep->GetSheepHealth(), this->Damage);
+				// UE_LOG(LogUwGame, Log, TEXT("Current Sheep health: %d, dealt damage: %f"), Sheep->GetSheepHealth(), this->Damage);
 				return false;
 			}
 		}

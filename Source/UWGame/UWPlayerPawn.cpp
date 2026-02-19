@@ -76,9 +76,6 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
                         {
                         case 0:
                             AccelerationPerSecond *= Settings->SpeedMultiplier;
-
-                            // UE_LOG(LogUwGame, Log, TEXT("Level Up! Speed increased by %.2f"), Settings->SpeedMultiplier);
-
 							GEngine->AddOnScreenDebugMessage(
 								-1, 
 								6.f, 
@@ -91,9 +88,6 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
                             break;
                         case 1:
                             Damage *= Settings->DamageMultiplier;
-
-                            // UE_LOG(LogUwGame, Log, TEXT("Level Up! Damage increased by %.2f"), Settings->DamageMultiplier);
-
 							GEngine->AddOnScreenDebugMessage(
 								-1,
 								5.f,
@@ -107,9 +101,6 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
                             break;
                         case 2:
                             CactusRetaliation *= Settings->CactusRetaliationMultiplier;
-
-                            // UE_LOG(LogUwGame, Log, TEXT("Level Up! Cactus Retaliation decreased by %.2f"), Settings->CactusRetaliationMultiplier);
-
 							GEngine->AddOnScreenDebugMessage(
 								-1,
 								5.f,
@@ -124,9 +115,6 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
                         case 3:
                             AdditionalTime *= Settings->AdditionalTimeMultiplier;
 							GameInst->AddMoreTime(AdditionalTime);
-
-                            // UE_LOG(LogUwGame, Log, TEXT("Level Up! Added %.2f seconds till the end of game"), AdditionalTime);
-
 							GEngine->AddOnScreenDebugMessage(
 								-1,
 								5.f,

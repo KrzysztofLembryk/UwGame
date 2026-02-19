@@ -157,7 +157,19 @@ bool AUWPlayerPawn::ConsumeSheep(AActor* Actor)
 
 void AUWPlayerPawn::RecvCactusRetaliation()
 {
-	ExperiencePoints -= this->CactusRetaliation * this->Damage;
+	float ExpLoss = this->CactusRetaliation * this->Damage;
+	ExperiencePoints -= ExpLoss;
+
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.f,
+		FColor::Green,
+		FString::Printf(
+			TEXT("Cactus Retaliation! %.2f exp lost!!!"),
+			ExpLoss),
+		true,
+		FVector2D(2.0f, 2.0f)
+	);
 
 	if (ExperiencePoints < 0.f)
 	{

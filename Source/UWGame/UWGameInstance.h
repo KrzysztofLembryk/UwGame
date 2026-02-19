@@ -32,6 +32,11 @@ public:
 	TArray<FScoreRow> GetAllScores() const;
 	
 	bool OpenLevel(int32 LevelNum);
+
+	UFUNCTION(BlueprintCallable)
+	void GoToNextLvl();
+
+	int32 GetCurrentLevelNum() const { return CurrentLevelNum; }
 	
 	void AddScore(float ScoreToAdd);
 
@@ -60,7 +65,7 @@ protected:
 	float ScoreSum = 0.f;
 	
 	UPROPERTY()
-	int32 CurrentLevelNum = 1;
+	int32 CurrentLevelNum = 0;
 
 	UPROPERTY()
 	FLevelRulesData CurrentLevelRules;

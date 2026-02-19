@@ -1,5 +1,6 @@
 #include "UWGameInstance.h"
 
+#include "UWGameLog.h"
 #include "UWGameGameState.h"
 #include "UWGameUtils.h"
 #include "Kismet/GameplayStatics.h"
@@ -36,7 +37,7 @@ void UUWGameInstance::AddMoreTime(float TimeToAdd)
 
 void UUWGameInstance::StartNewGame()
 {
-	CurrentLevelNum = 1;
+	CurrentLevelNum = 0;
 	ScoreSum = 0.f;
 
 	OpenLevel(CurrentLevelNum);
@@ -64,6 +65,7 @@ bool UUWGameInstance::OpenLevel(int32 LevelNum)
 		{
 			if (ResultRows[i]->LevelNumber == LevelNum)
 			{
+				UE_LOG(LogUwGame, Log, TEXT("Opening level %d"), LevelNum);
 				CurrentLevelRules = *ResultRows[i];
 				UGameplayStatics::OpenLevelBySoftObjectPtr(this, CurrentLevelRules.LevelPath, true);
 				return true;
@@ -122,6 +124,17 @@ void UUWGameInstance::TimeOut()
 		FinishGame();
 	}
 	
+}
+
+// Will be used to go from hub lvl to first lvl
+void UUWGameInstance::GoToNextLvl()
+{
+	CurrentLevelNum++;
+	bool bLevelFound = OpenLevel(CurrentLevelNum);
+	if (! bLevelFound)
+	{
+		FinishGame();
+	}
 }
 
 FLevelRulesData UUWGameInstance::GetCurrentLevelRules() const

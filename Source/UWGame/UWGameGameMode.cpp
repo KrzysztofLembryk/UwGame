@@ -1,5 +1,6 @@
 ﻿#include "UWGameGameMode.h"
 #include "UWGameGameState.h"
+#include "UWGameLog.h"
 #include "UWGameInstance.h"
 
 AUWGameGameMode::AUWGameGameMode()
@@ -31,6 +32,16 @@ void AUWGameGameMode::Tick(float DeltaSeconds)
 
 	if (AUWGameGameState* UWGameState = Cast<AUWGameGameState>(GameState))
 	{
+		// When we are in 0 level, we have no time limit, so we do not want to tick down 
+		// time or cause timeout
+		if (UUWGameInstance* UWGameInstance = Cast<UUWGameInstance>(GetGameInstance()))
+		{
+			if (UWGameInstance->GetCurrentLevelNum() == 0)
+			{
+				return;
+			}
+		}
+
 		if (UWGameState->TimeLeftSeconds <= 0)
 		{
 			if (UWGameState->bTimeOut == false)
